@@ -22,25 +22,6 @@ apt install $base_apps -y
 
 echo "Base installed :)"
 
-echo "Making zsh the default terminal..."
-
-chsh -s $(which zsh)
-
-if [ ! -d ~/.oh-my-zsh ]; then
-	echo "Installing OhMyZsh"
-	sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
-fi
-
-echo "Copying zshrc configuration..."
-
-if [ -f "~/.zshrc" ]; then
-	echo "Backing up actual conf..."
-	cp ~/.zshrc ~/.zshrc.backp
-	echo "Done"
-fi
-cp zshrc ~/.zshrc
-echo "Copied"
-
 if [ ! -d ~/.rbenv ]; then
 	echo "Installing Rbenv"
 	git clone https://github.com/rbenv/rbenv.git ~/.rbenv
@@ -89,5 +70,24 @@ gem install bundler
 
 echo "Installing rails"
 gem install rails
+
+echo "Making zsh the default terminal..."
+
+chsh -s $(which zsh)
+
+if [ ! -d ~/.oh-my-zsh ]; then
+	echo "Installing OhMyZsh"
+	sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+fi
+
+echo "Copying zshrc configuration..."
+
+if [ -f "~/.zshrc" ]; then
+	echo "Backing up actual conf..."
+	cp ~/.zshrc ~/.zshrc.backp
+	echo "Done"
+fi
+cp zshrc ~/.zshrc
+echo "Copied"
 
 echo "And... done :)"
