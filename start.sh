@@ -12,7 +12,7 @@ fi
 echo "Enter your password if apt ask for it"
 sudo apt update
 
-base_apps="git build-essential autoconf bison libssl-dev libyaml-dev libreadline-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev zsh hfsprogs exfat-fuse exfat-utils gitg autojump vim postgresql libpq-dev libsqlite3-dev"
+base_apps="git build-essential autoconf bison libssl-dev libyaml-dev libreadline-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev zsh hfsprogs exfat-fuse exfat-utils gitg autojump vim postgresql libpq-dev libsqlite3-dev python-pip python-dev gcc"
 
 sudo apt install $base_apps -y
 
@@ -93,5 +93,11 @@ if [ -f "~/.zshrc" ]; then
 fi
 cp zshrc ~/.zshrc
 echo "Copied"
+
+echo "Install python deps"
+echo "Upgrading pip"
+pip install --upgrade pip
+echo "Installing stormssh"
+pip install -U stormssh
 
 echo "And... done :)"
