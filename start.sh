@@ -2,18 +2,26 @@
 
 echo "This script will check and install development and common packages used by keylabs in ubuntu machines. Use wisely and... enjoy :)"
 
-if [ ! -f "/etc/apt/sources.list.d/pgdg.list" ]; then
-	echo "Adding postgresql repository"
+if ! grep -q "^deb .*postgresql" /etc/apt/sources.list /etc/apt/sources.list.d/*; then 
+	echo "Not found Postgresql PPA, adding..." 
 	sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
 	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 	echo "Added psql repo"
 fi
 
+if ! grep -q "^deb .*terminix" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+	echo "Not found Terminix (Tilix) PPA, adding cause it's AWESOME :)"
+        sudo add-apt-repository ppa:webupd8team/terminix -y
+fi
+
 echo "Enter your password if apt ask for it"
+
 sudo apt update
+sudo apt upgrade -y
 
-base_apps="git build-essential autoconf bison libssl-dev libyaml-dev libreadline-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev zsh hfsprogs exfat-fuse exfat-utils gitg autojump vim postgresql libpq-dev libsqlite3-dev python-pip python-dev gcc"
+base_apps="git build-essential autoconf bison libssl-dev libyaml-dev libreadline-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev zsh hfsprogs exfat-fuse exfat-utils gitg autojump vim postgresql libpq-dev libsqlite3-dev python-pip python-dev gcc tilix"
 
+# Run apt without checking nothing because apt it's idempotent :)
 sudo apt install $base_apps -y
 
 echo "Base installed :)"
@@ -35,10 +43,10 @@ if [ ! -d ~/.nvm ]; then
 	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
 fi
 
+echo "add nvm to path"
 # Add NVM to the path
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 echo "Installing node"
 nvm install node
@@ -98,6 +106,6 @@ echo "Install python deps"
 echo "Upgrading pip"
 pip install --upgrade pip
 echo "Installing stormssh"
-pip install -U stormssh
+pip install --upgrade --user stormssh
 
 echo "And... done :)"
