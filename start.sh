@@ -2,9 +2,15 @@
 
 echo "This script will check and install development and common packages used by keylabs in ubuntu machines. Use wisely and... enjoy :)"
 
+if [ ! -d /etc/apt/sources.list.d ]; then
+	echo "Doesn't exists sources.list.d folder, creating..."
+	sudo mkdir /etc/apt/sources.list.d
+	echo "done"
+fi
+
 if ! grep -q "^deb .*postgresql" /etc/apt/sources.list /etc/apt/sources.list.d/*; then 
 	echo "Not found Postgresql PPA, adding..." 
-	sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
+	sudo su -c "echo 'deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main' >> /etc/apt/sources.list.d/pgdg.list"
 	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 	echo "Added psql repo"
 fi
