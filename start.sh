@@ -25,7 +25,7 @@ echo "Enter your password if apt ask for it"
 sudo apt update
 sudo apt upgrade -y
 
-base_apps="git build-essential autoconf bison libssl-dev libyaml-dev libreadline-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev zsh hfsprogs exfat-fuse exfat-utils gitg autojump vim postgresql libpq-dev libsqlite3-dev python-pip python-dev gcc tilix"
+base_apps="git build-essential autoconf bison libssl-dev libyaml-dev libreadline-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev zsh hfsprogs exfat-fuse exfat-utils gitg autojump vim postgresql libpq-dev libsqlite3-dev python3-pip python3-dev gcc tilix libssl-dev libffi-dev"
 
 # Run apt without checking nothing because apt it's idempotent :)
 sudo apt install $base_apps -y
@@ -110,8 +110,8 @@ echo "Copied"
 
 echo "Install python deps"
 echo "Upgrading pip"
-pip install --upgrade pip
+sudo pip3 install --upgrade pip
 echo "Installing stormssh"
-pip install --upgrade --user stormssh
+sudo pip3 install --upgrade stormssh
 
 echo "And... done :)"
