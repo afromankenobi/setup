@@ -47,20 +47,29 @@ if [ ! -d ~/.rbenv ]; then
 	echo "Installed Rbenv"
 fi
 
-if [ ! -d ~/.nvm ]; then
-	echo "Installing NVM"
-	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+if [ ! -d ~/.asdf ]; then
+	echo "installing ASDF version manager"
+	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.4.0
+	echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.bashrc
+	echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc	
+	echo "Instaled ASDF"
 fi
 
-echo "add nvm to path"
-# Add NVM to the path
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
 echo "Installing node"
-nvm install node
-nvm use node
-nvm alias default node
+
+current_script_path="$0"
+
+export ASDF_DIR
+ASDF_DIR="$(cd "$(dirname "$current_script_path")" &> /dev/null || exit 1; pwd)"
+export PATH="${ASDF_DIR}/bin:${ASDF_DIR}/shims:$PATH"
+
+
+asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+# Imports Node.js release team's OpenPGP keys to main keyring
+bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+
+asdf install nodejs 8.1.3
+
 echo "Installing Yarn and Bower"
 npm install -g yarn
 npm install -g bower
